@@ -1,14 +1,14 @@
 # Nuxt
-.nuxt
-.output
-.data
+.nuxt/
+.output/
+.data/
 .env
 .env.*
 !.env.example
 
 # Dependencies
-node_modules
-.pnpm-store
+node_modules/
+.pnpm-store/
 
 # Logs
 *.log*
@@ -18,11 +18,14 @@ node_modules
 Thumbs.db
 
 # IDE
-.idea
-.vscode
+.idea/
+.vscode/
 *.swp
 *.swo
 
 # Build
-dist
-.cache
+dist/
+.cache/
+
+# Исключения для пустых папок - разрешаем коммитить .gitkeep файлы
+!.gitkeep
