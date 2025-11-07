@@ -9,12 +9,9 @@
     </form>
 </template>
 
-<script>
-export default{
-    data(){
-        return{
+<script setup>
+definePageMeta({
+    layout: 'auth',
+})
 
-        }
-    }
-}
 </script>

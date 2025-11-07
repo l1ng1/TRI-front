@@ -4,10 +4,11 @@
         <div class="cont">
             <div class="logo">
                 TRI
+                <input type="text" placeholder="Поиск" @keydown="(ev)=>navSearch(ev)">
             </div>
             <div class="menu">
                 <button>profile</button>
-                <button>search</button>
+                <button>message</button>
                 <button>notifications</button>
             </div>
         </div>
@@ -15,15 +16,15 @@
     <main>
         <div class="cont">
             <div class="side-bar">
-                Текущие ролевые игры
                 <ul>
-                    <li v-for="i in arr" :key="index">
-                        {{ i }}
+                    <li v-for="(i,index) in tabs" :key="index">
+                        <NuxtLink :to="i.link">{{ i.name }}</NuxtLink>
                     </li>
                 </ul>
             </div>
             <slot class="main-contnet"> </slot>
         </div>
+
     </main>
     
 
@@ -31,7 +32,41 @@
 
 <script setup>
 
-let arr = ref(['Игра 1','Игра 2','Игра 3','Игра 4']);
+const tabs = reactive([
+    {
+        name:'Новости',
+        link:'/news'
+    },
+    {
+        name:'Игры',
+        link:'/games'
+    },
+    {
+        name:'Квесты',
+        link:'/quests'
+    },
+    {
+        name:'Персонажи',
+        link:'/characters'
+    },
+    {
+        name:'Сообщения',
+        link:'/messegaes'
+    },
+    {
+        name:'Сообщения об ошибках',
+        link:'/errors'
+    }
+]);
+
+function navSearch(ev){
+    console.log(ev.key)
+    if(ev.code == 'Enter'){
+        navigateTo('login');
+    }
+        
+}
+
 
 </script>
 
