@@ -24,9 +24,10 @@
             </div>
             <slot class="main-contnet"> </slot>
         </div>
-
     </main>
     
+
+
 
 </template>
 
@@ -63,8 +64,7 @@ function navSearch(ev){
     console.log(ev.key)
     if(ev.code == 'Enter'){
         navigateTo('login');
-    }
-        
+    }    
 }
 
 
