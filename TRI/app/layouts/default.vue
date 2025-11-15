@@ -95,8 +95,25 @@ function navSearch(ev){
         flex-direction: column;
         width: 25%;
     }
+    .side-bar ul{
+        list-style: none;
+    }
+
+    li a{
+        text-decoration: none;
+        color: black;
+    }
+    li, li a{
+        transition: all 0.15s;
+    }
+    li:hover{
+        padding-left: 5px;
+    }
     .main-content{
         width: 85%;
+    }
+    .router-link-active{
+        padding-left: 5px;
     }
 
 </style>
