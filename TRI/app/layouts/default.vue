@@ -74,10 +74,7 @@ function navSearch(ev){
     .cont{
         width: 1120px;
         margin: 0 auto;
-    }
-    .cont{
         display: flex;
-        justify-content: space-between;
     }
     header{
         padding: 20px 0px;
