@@ -7,13 +7,14 @@
                 class="search__input"
                 placeholder="Поиск">
             </label>
+            <div class="news__tags tags">
+                <span class="tag">Игры</span>
+                <span class="tag">Полки</span>
+                <span class="tag">Решение</span>
+                <span class="tag">Новости</span>
+            </div>
         </div>
-        <div class="news__tags tags">
-            <span class="tag">Игры</span>
-            <span class="tag">Полки</span>
-            <span class="tag">Решение</span>
-            <span class="tag">Новости</span>
-        </div>
+        
         <div class="news__post post">
             <div class="post__item">
                 <h3 class="post__title">Заголовок новости</h3>
@@ -52,6 +53,7 @@
         outline: none;
         border: 1px solid #eee;
         font-size: 16px;
+        margin-bottom: 15px;
     }
 
     .tags {
