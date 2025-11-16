@@ -75,17 +75,18 @@ function navSearch(ev){
         width: 1120px;
         margin: 0 auto;
         display: flex;
+        justify-content: space-between
     }
     header{
         padding: 20px 0px;
     }
 
-    .logo{
+    /* .logo{
         width: 75%;
     }
     .menu{
         width: 25%;
-    }
+    } */
 
     .side-bar{
         display: flex;
