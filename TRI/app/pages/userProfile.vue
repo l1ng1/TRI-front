@@ -45,10 +45,9 @@
 
 <style scoped>
     .userProfile {
-        margin: 0px 100px;
         display: flex;
         align-items: flex-start;
-        gap: 100px
+        gap: 75px
     }
 
     ul {
