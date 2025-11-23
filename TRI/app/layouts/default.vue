@@ -7,7 +7,7 @@
                 <input type="text" placeholder="Поиск" @keydown="(ev)=>navSearch(ev)">
             </div>
             <div class="menu">
-                <button>profile</button>
+                <NuxtLink :to="profile.link">profile</NuxtLink>
                 <button>message</button>
                 <button>notifications</button>
             </div>
@@ -59,6 +59,11 @@ const tabs = reactive([
         link:'/errors'
     }
 ]);
+
+const profile = reactive({
+    name: 'profile',
+    link: "/userProfile"
+});
 
 function navSearch(ev){
     console.log(ev.key)

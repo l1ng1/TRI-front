@@ -14,7 +14,7 @@
                 </li>
             </ul>
 
-            <p>Нелюбимые жанры (кто это придумал бля)</p>
+            <p>Нелюбимые жанры</p>
             <ul class="genresList">
                 <li class="genre" v-for = "Genre in UserExample.userUnfavGenres">
                     {{Genre.name}}
@@ -29,18 +29,22 @@
             </ul>
 
             <p>Персонажи</p>
-            <ul class="charList">
-                <li v-for = "Char in UserExample.userCharList">
-                    <img class="charImg" :src = "Char">
-                </li>
-            </ul>
+            <CharList :link="character.link" :list="UserExample.userCharList" />
             <button class="change">Редактировать</button>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-    import {UserExample} from '~/data/user.ts'
+    import {UserExample} from '~/data/user';
+    import { CharExample } from '~/data/characters';
+    import charList from '~/components/charComp/charList.vue';
+import CharList from '~/components/charComp/charList.vue';
+
+    const character = reactive({
+        name: CharExample.name,
+        link: '/characters'
+    })
 </script>
 
 <style scoped>
@@ -83,19 +87,5 @@
         width: fit-content;
         background-color: grey;
         padding: 3px 7px
-    }
-
-    .charList {
-        display: flex;
-        align-items: flex-start;
-        gap: 30px;
-    }
-
-    .charImg {
-        border-radius: 50%;
-        object-fit: cover;
-        border: solid black;
-        width: 150px;
-        aspect-ratio: 1;
     }
 </style>
