@@ -71,12 +71,6 @@ function navSearch(ev){
 </script>
 
 <style scoped>
-    .cont{
-        width: 1120px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between
-    }
     header{
         padding: 20px 0px;
     }
