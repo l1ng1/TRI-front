@@ -150,6 +150,7 @@ definePageMeta({
     height: 30rem;
     border-radius: 1rem;
     padding: 2rem;
+    opacity: 30%;
 }
 .card_second{
     margin-block: 16rem;
