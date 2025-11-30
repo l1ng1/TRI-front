@@ -1,7 +1,11 @@
 <template>
     <form class="login">
-        <h2 class="login__title">Вход</h2>
+        <h2 class="login__title">Регистария</h2>
         <div class="login__inputs-box">
+            <label class="login__label">
+                Имя пользователя
+                <input type="text" class="login__input">
+            </label>
             <label class="login__label">
                 Логин
                 <input type="text" class="login__input">
@@ -11,10 +15,10 @@
                 <input type="password" class="login__input">
             </label>
         </div>
-        <button class="btn login__btn">Войти</button>
+        <button class="btn login__btn">Зарегистрироваться</button>
         <p class="login__text">
             Еще нет аккаунта? 
-            <a href="./registration" class="login__link">Зарегистрироваться</a>
+            <a href="./login" class="login__link">Войти</a>
         </p>
     </form>
 </template>
