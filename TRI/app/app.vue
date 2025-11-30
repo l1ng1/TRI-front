@@ -175,6 +175,7 @@ svg * {
     --color-light: #FFFFFF;
     --color-dark: #000000;
     --color-footer: #E6E9ED;
+    --color-grey: #989AA4;
 
     --border: 1px solid var(--color-dark);
 
@@ -191,9 +192,8 @@ html{
 .btn{
   background-color: #0051A8;
   color: #fff;
-  height: 5rem;
   border-radius: .7rem;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
   text-transform: uppercase;
   font-size: 1.6rem;
   border: none;
