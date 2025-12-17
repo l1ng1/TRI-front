@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-    import {UserExample} from '~/data/user.ts'
+    import {UserExample} from '~/data/user'
     definePageMeta({
     layout: 'main'
     })
