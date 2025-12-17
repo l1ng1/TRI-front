@@ -4,13 +4,16 @@
     <div class="game-header">
         <img :src="props.game.gameIcon">
         <div class="game-name">
-            <h3>{{ props.game.gameName }}</h3>
-            <p>{{ props.game.gameAuthorId }}</p>
-            <p>{{ props.game.gameStatus }}</p>
+            <h3>Название игры: {{ props.game.gameName }}</h3>
+            <p>#{{ props.game.gameAuthorId }}</p>
+            <p>Статус игры: {{ props.game.gameStatus }}</p>
         </div>
     </div>
     <h3 class="game-description">
-        {{ props.game.gameDescription }}
+        Описание игры:
+        <p>
+            {{ props.game.gameDescription }}
+        </p>
     </h3>
     <div class="genres">
         <span v-for="(genre,index) in props.game.gameGenres">
@@ -37,9 +40,9 @@ const props = defineProps<{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border: 1px black solid;
+    border-bottom: 1px black solid;
     padding: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 .game-header{
     display: flex;
@@ -55,8 +58,9 @@ const props = defineProps<{
     gap: 5px;
 }
 .genres span{
+    font-size: 10px;
     background-color: rgb(213, 213, 213);
-    padding: 4px 3px;
+    padding: 2px 3px;
     border-radius: 2px;
 }
 </style>
