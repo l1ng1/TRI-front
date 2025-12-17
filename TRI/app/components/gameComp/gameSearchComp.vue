@@ -35,9 +35,10 @@ import {GAME_GENRES}  from '../../data/genres'
 }
 
 .genre{
-    padding:5px 3px;
+    padding:3px 5px;
     background-color: rgb(186, 186, 186);
     cursor: pointer;
+    border-radius: 7px;
 }
 
 .search-block{
@@ -62,17 +63,23 @@ import {GAME_GENRES}  from '../../data/genres'
 }
 .input-block button{
     background-color: white;
-    border: 1px black solid;
+    border-width: 0px;
     width: 125px;
+    border: 1px black solid;
+    border-radius: 7px;
     cursor: pointer;
 }
 
 .create-game-btn{
     width: 90%;
     padding: 10px;
-    border: 1px black solid;
     background-color: white;
     margin: 10px 0px;
+    font-size: 16px;
+    border-width: 0px;
+    border-radius: 7px;
+    background-color: #0051A8;
+    color: white;
 }
 
 
