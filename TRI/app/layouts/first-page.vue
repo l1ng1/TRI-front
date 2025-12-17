@@ -4,15 +4,9 @@
                 <div class="logo">
                     <p class="logo-text">Платформа TRI</p>
                     <button class="btn">Поиск игры</button>
-                    <button class="btn">Друзья</button>
                 </div>
                 <div class="menu">
-                    <button class="btn-message">
-                         <img class="icon-message" src="../icon/main/message-square.svg" alt="">
-                    </button>
-                    <button class="btn btn-profile">
-                        <img src="" alt="">
-                    </button>
+                    <button class="btn">Войти</button>
                 </div>
             </div>
         </header>
@@ -117,10 +111,6 @@
     .footer__desc{
         font-size: 2rem ;
     }
-    .menu{
-        display: flex;
-        gap: 4rem;
-    }
     .material__list{
         display: flex;
         flex-direction: column;
@@ -135,14 +125,6 @@
         display: flex;
         flex-direction: row;
         gap: 2rem;
-    }
-    .btn-profile{
-        width: 5.7rem;
-        height: 5.7rem;
-        border-radius: 50%;
-    }
-    .btn-message{
-        border: none;
     }
 
 </style>

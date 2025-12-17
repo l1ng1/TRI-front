@@ -82,7 +82,7 @@
 
 <script setup>
 definePageMeta({
-  layout: 'main'
+  layout: 'first-page'
 })
 
 </script>
