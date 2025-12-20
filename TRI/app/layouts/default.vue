@@ -7,7 +7,7 @@
                 <input type="text" placeholder="Поиск" @keydown="(ev)=>navSearch(ev)">
             </div>
             <div class="menu">
-                <NuxtLink :to="profile.link">profile</NuxtLink>
+                <NuxtLink :to="`/profile/0`">profile</NuxtLink>
                 <button>message</button>
                 <button>notifications</button>
             </div>
@@ -18,7 +18,7 @@
             <div class="side-bar">
                 <ul>
                     <li v-for="(i,index) in tabs" :key="index">
-                        <NuxtLink :to="i.link">{{ i.name }}</NuxtLink>
+                        <NuxtLink :to="i.link" >{{ i.name }}</NuxtLink>
                     </li>
                 </ul>
             </div>
@@ -44,15 +44,11 @@ const tabs = reactive([
     },
     {
         name:'Квесты',
-        link:'/quests'
-    },
-    {
-        name:'Персонажи',
-        link:'/characters'
+        link:'/quests',
     },
     {
         name:'Сообщения',
-        link:'/messegaes'
+        link:'/messages'
     },
     {
         name:'Сообщения об ошибках',
@@ -62,7 +58,7 @@ const tabs = reactive([
 
 const profile = reactive({
     name: 'profile',
-    link: "/userProfile"
+    link: "/profile/0"
 });
 
 function navSearch(ev){
