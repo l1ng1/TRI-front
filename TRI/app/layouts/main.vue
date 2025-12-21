@@ -8,7 +8,7 @@
                 </div>
                 <div class="menu">
                     <button class="btn-message">
-                         <img class="icon-message" src="../icon/main/message-square.svg" alt="">
+                        <img class="icon-message" src="../icon/main/message-square.svg" alt="">
                     </button>
                     <button class="btn btn-profile">
                         <img src="" alt="">

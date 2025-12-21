@@ -4,13 +4,13 @@ import { GAMES } from "./games";
 import { UserExample } from "./user";
 
 export interface Character {
-    id: number,
+    id?: number,
     name: string,
     icon: string,
     stats: Object,
     description: string,
     authorId: number,
-    games: Array<Game>
+    gameId: number
 }
 
 export const CharExample: Character = {
@@ -30,5 +30,5 @@ export const CharExample: Character = {
     },
     description: 'Харри Магуайр – английский футболист, центральный защитник, известный своей физической мощью, силовой игрой и лидерскими качествами.',
     authorId: 0,
-    games: GAMES
+    gameId: 0
 }

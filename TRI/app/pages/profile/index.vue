@@ -67,6 +67,8 @@
     definePageMeta({
     layout: 'main'
     })
+
+    const query = useRoute().params.id
 </script>
 
 <style scoped>
