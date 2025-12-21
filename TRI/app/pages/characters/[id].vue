@@ -30,7 +30,7 @@
 
             <menu class="menu">
                 <button class="btn-delete" @click="handleDelete">Удалить</button>
-                <NuxtLink class="btn-edit" :to="`/characters/edit/${character.id}`">
+                <NuxtLink class="btn-edit" :to="`./charForm/${character.id}`">
                     Редактировать
                 </NuxtLink>
             </menu>

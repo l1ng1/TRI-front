@@ -7,7 +7,7 @@
                 <img class="char-img" :src="char.icon" :alt="char.name || 'Character icon'" />
             </NuxtLink>
         </li>
-        <NuxtLink to="/charForm">Создать</NuxtLink>
+        <NuxtLink to="/characters/charForm">Создать</NuxtLink>
     </ul>
 </template>
 

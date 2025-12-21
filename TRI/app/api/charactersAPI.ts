@@ -1,4 +1,4 @@
-const DB = 'http://localhost:3000'
+const DB = 'http://localhost:4000'
 
 export async function getChars() {
     const res = await fetch(`${DB}/characters`)
