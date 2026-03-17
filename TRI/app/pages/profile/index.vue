@@ -12,17 +12,17 @@
                 <ul class="networks__list">
                         <li class="networks__item">
                             <a href="" class="networks__link">
-                                <img src="../icon/footer-networks/vk.svg" alt="" class="networks__icon">
+                                <img src="../../icon/footer-networks/vk.svg" alt="" class="networks__icon">
                             </a>
                         </li>
                         <li class="networks__item">
                             <a href="" class="networks__link">
-                                <img src="../icon/footer-networks/Telegram.svg" alt="" class="networks__icon">
+                                <img src="../../icon/footer-networks/Telegram.svg" alt="" class="networks__icon">
                             </a>
                         </li>
                         <li class="networks__item">
                             <a href="" class="networks__link">
-                                <img src="../icon/footer-networks/mail.svg" alt="" class="networks__icon">
+                                <img src="../../icon/footer-networks/mail.svg" alt="" class="networks__icon">
                             </a>
                         </li>
                     </ul>
