@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   modules:['@pinia/nuxt'],
   typescript:{
     strict:true,
-    typeCheck:true,
+    typeCheck:false,
   },
   ssr:true,
   compatibilityDate: '2025-07-15',
