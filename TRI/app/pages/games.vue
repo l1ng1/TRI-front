@@ -4,20 +4,23 @@
     <gameSearchComp></gameSearchComp>
 
     <div class="games">
-        <gameComp v-for="game in GAMES" :game="game"></gameComp>
+        <gameComp v-for="game in gamesStore.games" :key="game.id" :game="game"></gameComp>
     </div>
 </div>
 
-
-
 </template>
 
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useGamesStore } from '../stores/useGamesStore'
+import GameSearchComp from '~/components/gameComp/gameSearchComp.vue';
+import GameComp from '~/components/gameComp/gameComp.vue';
 
-<script setup>
-import gameSearchComp from '~/components/gameComp/gameSearchComp.vue';
-import gameComp from '~/components/gameComp/gameComp.vue';
-import { GAMES } from '~/data/games';
 
+
+const gamesStore = useGamesStore()
+
+onMounted(() => gamesStore.fetchAll())
 </script>
 
 <style scoped>
@@ -32,5 +35,4 @@ import { GAMES } from '~/data/games';
     display: flex;
     flex-direction: column;
 }
-
 </style>

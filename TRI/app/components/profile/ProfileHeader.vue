@@ -7,12 +7,12 @@
     <div class="header-body cont">
       <div class="left">
         <div class="avatar-wrap">
-          <img class="avatar" :src="user.userIcon" :alt="user.userName" />
+          <img class="avatar" src="/placeholder-avatar.png" :alt="user.username" />
           <span class="rank-badge">⭐ Новичок</span>
         </div>
         <div class="user-meta">
-          <h1 class="username">{{ user.userName }}</h1>
-          <p class="user-email">{{ user.userEmail }}</p>
+          <h1 class="username">{{ user.username }}</h1>
+          <p class="user-email">{{ user.email }}</p>
           <div class="socials">
             <a href="#" class="social-link">
               <img src="../../icon/footer-networks/vk.svg" alt="VK" class="social-icon" />
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '~/data/user'
+import type { User } from '../../types'
 
 defineProps<{
   user: User

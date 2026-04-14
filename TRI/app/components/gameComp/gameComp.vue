@@ -2,36 +2,30 @@
 
 <div class="game">
     <div class="game-header">
-        <img :src="props.game.gameIcon">
+        <img src="/placeholder-game.png">
         <div class="game-name">
-            <h3>Название игры: {{ props.game.gameName }}</h3>
-            <p>#{{ props.game.gameAuthorId }}</p>
-            <p>Статус игры: {{ props.game.gameStatus }}</p>
+            <h3>Название игры: {{ props.game.title }}</h3>
+            <p>Статус игры: {{ props.game.status }}</p>
         </div>
     </div>
     <h3 class="game-description">
         Описание игры:
         <p>
-            {{ props.game.gameDescription }}
+            {{ props.game.about }}
         </p>
     </h3>
-    <div class="genres">
-        <span v-for="(genre,index) in props.game.gameGenres">
-            {{ genre.name }}
-        </span>
-    </div>
     <div class="line"></div>
-    <p>Участников: {{ props.game.gameFollowers }}</p>
+    <p>Участников: {{ props.game.players_name.length }}</p>
 </div>
 
 </template>
 
 <script setup lang="ts">
-import type { Game } from '~/data/games';
+import type { Game } from '../../types'
+
 const props = defineProps<{
     game: Game,
 }>()
-
 </script>
 
 <style scoped>
@@ -52,15 +46,5 @@ const props = defineProps<{
     width: 10%;
     object-fit: cover;
     border-radius: 100px;
-}
-.genres{
-    display: flex;
-    gap: 5px;
-}
-.genres span{
-    font-size: 10px;
-    background-color: rgb(213, 213, 213);
-    padding: 2px 3px;
-    border-radius: 2px;
 }
 </style>
