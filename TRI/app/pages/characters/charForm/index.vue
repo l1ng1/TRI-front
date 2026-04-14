@@ -11,7 +11,7 @@
 
             <label class="form-label">
                 <span>Описание</span>
-                <textarea v-model="form.description" minlength="3" rows="5"
+                <textarea v-model="form.about" minlength="3" rows="5"
                     placeholder="Краткое описание персонажа"></textarea>
             </label>
 
@@ -52,15 +52,14 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { postChar } from '~/api/charactersAPI'
-import type { Character } from '~/data/characters'
+import { useCharactersStore } from '../../../stores/useCharactersStore'
 
 const router = useRouter()
+const store = useCharactersStore()
 
 const form = reactive({
     name: '',
-    description: '',
-    icon: '',
+    about: '',
     stats: [] as Array<{ key: string; value: number }>
 })
 
@@ -84,35 +83,25 @@ async function submitForm() {
     isSuccess.value = false
 
     try {
-        const statsObject = form.stats.reduce((acc, stat) => {
-            if (stat.key.trim()) {
-                acc[stat.key.trim()] = stat.value
-            }
+        const statsObject = form.stats.reduce((acc: Record<string, number>, stat) => {
+            if (stat.key.trim()) acc[stat.key.trim()] = stat.value
             return acc
-        }, {} as Record<string, number>)
+        }, {})
 
-        const newCharacter: Character = {
+        await store.create({
             name: form.name.trim(),
-            icon: '',
-            description: form.description.trim(),
-            stats: statsObject,
-            authorId: 0,
-            gameId: 0
-        }
-
-        await postChar(newCharacter)
+            about: form.about.trim(),
+            characteristics: JSON.stringify(statsObject),
+        })
 
         isSuccess.value = true
         message.value = 'Персонаж успешно добавлен!'
 
         form.name = ''
-        form.description = ''
-        form.icon = ''
+        form.about = ''
         form.stats = []
 
-        setTimeout(() => {
-            router.push('/profile/0')
-        }, 2000)
+        setTimeout(() => router.push('/profile'), 2000)
     } catch (error) {
         isSuccess.value = false
         message.value = 'Ошибка при добавлении персонажа. Попробуйте позже.'

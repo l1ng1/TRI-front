@@ -1,43 +1,34 @@
 <template>
-    <section v-if="character" class="character">
-        <img class="icon" :src="character.icon || '/placeholder-avatar.png'" alt="Иконка персонажа" />
+    <section v-if="store.currentCharacter" class="character">
+        <img class="icon" src="/placeholder-avatar.png" alt="Иконка персонажа" />
 
         <div class="character-wrapper">
-            <p><strong>Имя персонажа:</strong> {{ character.name }}</p>
-            <p><strong>Описание:</strong> {{ character.description || 'Нет описания' }}</p>
-            <p><strong>Автор:</strong> {{ character.author?.userName || 'Неизвестен' }}</p>
+            <p><strong>Имя персонажа:</strong> {{ store.currentCharacter.name }}</p>
+            <p><strong>Описание:</strong> {{ store.currentCharacter.about || 'Нет описания' }}</p>
+            <p><strong>Владелец:</strong> {{ store.currentCharacter.owners_name || 'Неизвестен' }}</p>
+            <p><strong>Локация:</strong> {{ store.currentCharacter.location_name || 'Не указана' }}</p>
+            <p><strong>Статус:</strong> {{ store.currentCharacter.status || 'Не указан' }}</p>
 
             <p><strong>Характеристики</strong></p>
-            <ul class="stats-list" v-if="hasStats">
-                <li class="stat" v-for="(value, key) in character.stats" :key="key">
-                    {{ capitalize(key) }}: {{ value }}
-                </li>
-            </ul>
+            <p v-if="store.currentCharacter.characteristics" class="characteristics-text">
+                {{ store.currentCharacter.characteristics }}
+            </p>
             <p v-else class="no-data">Характеристики не указаны</p>
 
-            <p><strong>Квесты/игры</strong></p>
-            <ul class="games-list" v-if="character.games?.length">
-                <li class="game" v-for="game in character.games" :key="game.gameId">
-                    {{ game.gameName }}
-                </li>
-            </ul>
-            <p v-else class="no-data">Нет связанных квестов или игр</p>
-
-            <!-- Сообщение после удаления -->
             <p v-if="deleteMessage" :class="{ success: deleteSuccess, error: !deleteSuccess }">
                 {{ deleteMessage }}
             </p>
 
             <menu class="menu">
                 <button class="btn-delete" @click="handleDelete">Удалить</button>
-                <NuxtLink class="btn-edit" :to="`./charForm/${character.id}`">
+                <NuxtLink class="btn-edit" :to="`./charForm/${store.currentCharacter.id}`">
                     Редактировать
                 </NuxtLink>
             </menu>
         </div>
     </section>
 
-    <div v-else-if="error" class="error">
+    <div v-else-if="store.error" class="error">
         Персонаж не найден или произошла ошибка
     </div>
 
@@ -47,53 +38,36 @@
 </template>
 
 <script setup lang="ts">
-import type { Character } from '~/data/characters'
-import { getCharById, deleteChar } from '~/api/charactersAPI'
-import { useRouter } from 'vue-router'
+import { computed, ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useCharactersStore } from '../../stores/useCharactersStore'
 
 const route = useRoute()
 const router = useRouter()
+const store = useCharactersStore()
+
 const characterId = computed(() => route.params.id as string)
 
-// Загрузка персонажа
-const { data: character, error, pending } = await useAsyncData(
-    `character-${characterId.value}`,
-    () => getCharById(characterId.value)
-)
-
-const hasStats = computed(() =>
-    character.value?.stats && Object.keys(character.value.stats).length > 0
-)
-
-const capitalize = (str: string): string =>
-    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
-
-// Состояние для удаления
 const deleteMessage = ref('')
 const deleteSuccess = ref(false)
+
+onMounted(() => store.fetchById(characterId.value))
 
 async function handleDelete() {
     if (!confirm('Вы уверены, что хотите удалить этого персонажа? Это действие нельзя отменить.')) {
         return
     }
-
     try {
-        await deleteChar(characterId.value)
+        await store.remove(characterId.value)
         deleteSuccess.value = true
         deleteMessage.value = 'Персонаж успешно удалён!'
-
-        // Редирект на профиль через 1 секунду
-        setTimeout(() => {
-            router.push('/profile/0')
-        }, 1000)
+        setTimeout(() => router.push('/profile'), 1000)
     } catch (err) {
         deleteSuccess.value = false
         deleteMessage.value = 'Ошибка при удалении персонажа. Попробуйте позже.'
         console.error(err)
     }
 }
-
-watch(characterId, () => refreshNuxtData(`character-${characterId.value}`))
 </script>
 
 <style scoped>
@@ -122,16 +96,12 @@ watch(characterId, () => refreshNuxtData(`character-${characterId.value}`))
     max-width: 770px;
 }
 
-ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 12px 0;
-}
-
-.stat,
-.game {
-    padding: 6px 0;
-    border-bottom: 1px dashed #ccc;
+.characteristics-text {
+    background: #f5f5f5;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    white-space: pre-wrap;
 }
 
 .no-data {
@@ -189,13 +159,6 @@ ul {
 
 .success {
     color: #00aa00;
-    font-weight: 600;
-    text-align: center;
-    margin-top: 1rem;
-}
-
-.error {
-    color: #ff4444;
     font-weight: 600;
     text-align: center;
     margin-top: 1rem;

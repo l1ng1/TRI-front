@@ -6,7 +6,7 @@
             <button>Найти</button>
         </div>
         <div class="gnrs">
-                <span class="genre" v-for="(genre,index) in GAME_GENRES">
+                <span class="genre" v-for="(genre, index) in GAME_GENRES" :key="index">
                     {{ genre.name }}
                 </span>
             </div>
@@ -16,11 +16,8 @@
 </template>
 
 
-<script setup>
-import {GAME_GENRES}  from '../../data/genres'
-
-
-
+<script setup lang="ts">
+import { GAME_GENRES } from '~/data/genres'
 </script>
 
 
