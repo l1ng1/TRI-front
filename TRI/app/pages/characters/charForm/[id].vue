@@ -2,12 +2,12 @@
     <div class="add-character-page">
         <h1>Редактирование персонажа</h1>
 
-        <div v-if="pending" class="loading">
+        <div v-if="store.loading" class="loading">
             Загрузка персонажа...
         </div>
 
-        <div v-else-if="error" class="error">
-            Ошибка загрузки персонажа: {{ error }}
+        <div v-else-if="store.error" class="error">
+            Ошибка загрузки персонажа: {{ store.error }}
         </div>
 
         <form v-else @submit.prevent="submitForm" class="add-char-form">
@@ -19,7 +19,7 @@
 
             <label class="form-label">
                 <span>Описание</span>
-                <textarea v-model="form.description" minlength="3" rows="5"
+                <textarea v-model="form.about" minlength="3" rows="5"
                     placeholder="Краткое описание персонажа"></textarea>
             </label>
 
@@ -58,23 +58,19 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getCharById, patchChar } from '~/api/charactersAPI'
-import type { Character } from '~/data/characters'
+import { useCharactersStore } from '../../../stores/useCharactersStore'
 
 const route = useRoute()
 const router = useRouter()
-const characterId = route.params.id as string
+const store = useCharactersStore()
 
-const { data: character, pending, error } = await useAsyncData(
-    `character-edit-${characterId}`,
-    () => getCharById(characterId)
-)
+const characterId = route.params.id as string
 
 const form = reactive({
     name: '',
-    description: '',
+    about: '',
     stats: [] as Array<{ key: string; value: number }>
 })
 
@@ -82,15 +78,21 @@ const isSubmitting = ref(false)
 const message = ref('')
 const isSuccess = ref(false)
 
-watch(character, (newChar) => {
-    if (newChar) {
-        form.name = newChar.name || ''
-        form.description = newChar.description || ''
+onMounted(() => store.fetchById(characterId))
 
-        form.stats = Object.entries(newChar.stats || {}).map(([key, value]) => ({
-            key,
-            value: value as number
-        }))
+watch(() => store.currentCharacter, (char) => {
+    if (char) {
+        form.name = char.name || ''
+        form.about = char.about || ''
+        try {
+            const parsed = JSON.parse(char.characteristics || '{}')
+            form.stats = Object.entries(parsed).map(([key, value]) => ({
+                key,
+                value: value as number
+            }))
+        } catch {
+            form.stats = []
+        }
     }
 }, { immediate: true })
 
@@ -110,28 +112,21 @@ async function submitForm() {
     isSuccess.value = false
 
     try {
-        const statsObject = form.stats.reduce((acc, stat) => {
-            if (stat.key.trim()) {
-                acc[stat.key.trim()] = stat.value
-            }
+        const statsObject = form.stats.reduce((acc: Record<string, number>, stat) => {
+            if (stat.key.trim()) acc[stat.key.trim()] = stat.value
             return acc
-        }, {} as Record<string, number>)
+        }, {})
 
-        const updatedCharacter = {
-            id: characterId,
+        await store.update(characterId, {
             name: form.name.trim(),
-            description: form.description.trim(),
-            stats: statsObject
-        }
-
-        await patchChar(updatedCharacter)
+            about: form.about.trim(),
+            characteristics: JSON.stringify(statsObject),
+        })
 
         isSuccess.value = true
         message.value = 'Персонаж успешно обновлён!'
 
-        setTimeout(() => {
-            router.push(`/characters/${characterId}`)
-        }, 2000)
+        setTimeout(() => router.push(`/characters/${characterId}`), 2000)
     } catch (err) {
         isSuccess.value = false
         message.value = 'Ошибка при сохранении. Попробуйте позже.'
@@ -143,7 +138,6 @@ async function submitForm() {
 </script>
 
 <style scoped>
-/* Те же стили, что и в форме добавления — можно вынести в отдельный файл или миксин */
 .add-character-page {
     max-width: 800px;
     margin: 0 auto;

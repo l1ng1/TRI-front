@@ -1,6 +1,6 @@
 <template>
   <div class="profile-page">
-    <ProfileHeader :user="UserExample" :isOwn="true" @edit="editMode = !editMode" />
+    <ProfileHeader v-if="currentUser" :user="currentUser" :isOwn="true" @edit="editMode = !editMode" />
 
     <div class="cont profile-content">
 
@@ -40,19 +40,6 @@
           ></textarea>
         </div>
 
-        <div class="card genres-card">
-          <h2 class="card-title">Любимые жанры</h2>
-          <div class="genre-list">
-            <span
-              v-for="genre in UserExample.userFavGenres"
-              :key="genre.id + genre.name"
-              class="genre-tag"
-            >
-              {{ genre.name }}
-            </span>
-          </div>
-        </div>
-
         <div class="card settings-card">
           <h2 class="card-title">Настройки профиля</h2>
           <div class="setting-row">
@@ -73,9 +60,9 @@
             <h2 class="card-title">Мои персонажи</h2>
             <NuxtLink to="/characters/charForm" class="btn btn-sm">+ Создать</NuxtLink>
           </div>
-          <div v-if="UserExample.userCharList.length" class="char-grid">
+          <div v-if="myCharacters.length" class="char-grid">
             <ProfileCharCard
-              v-for="(char, i) in UserExample.userCharList"
+              v-for="(char, i) in myCharacters"
               :key="char.id ?? i"
               :char="char"
             />
@@ -87,29 +74,24 @@
       <!-- Игры -->
       <section v-if="activeTab === 'games'" class="tab-panel">
         <div class="card">
-          <h2 class="card-title" style="margin-bottom: 2rem">Избранные игры</h2>
-          <div v-if="UserExample.userFavGames.length" class="game-list">
+          <h2 class="card-title" style="margin-bottom: 2rem">Мои игры</h2>
+          <div v-if="myGames.length" class="game-list">
             <div
-              v-for="game in UserExample.userFavGames"
-              :key="game.gameId"
+              v-for="game in myGames"
+              :key="game.id"
               class="game-row"
             >
-              <img :src="game.gameIcon" :alt="game.gameName" class="game-icon" />
+              <img src="/placeholder-game.png" :alt="game.title" class="game-icon" />
               <div class="game-info">
-                <p class="game-name">{{ game.gameName }}</p>
-                <p class="game-desc">{{ game.gameDescription }}</p>
-                <div class="game-genres">
-                  <span v-for="g in game.gameGenres" :key="g.id + g.name" class="genre-tag genre-tag--sm">
-                    {{ g.name }}
-                  </span>
-                </div>
+                <p class="game-name">{{ game.title }}</p>
+                <p class="game-desc">{{ game.about }}</p>
               </div>
-              <span class="status-badge" :class="game.gameStatus === 'Закрыто' ? 'status--closed' : 'status--open'">
-                {{ game.gameStatus }}
+              <span class="status-badge" :class="['ended','abandoned'].includes(game.status) ? 'status--closed' : 'status--open'">
+                {{ game.status }}
               </span>
             </div>
           </div>
-          <p v-else class="empty-text">Нет избранных игр</p>
+          <p v-else class="empty-text">Нет игр</p>
         </div>
       </section>
 
@@ -118,30 +100,57 @@
 </template>
 
 <script setup lang="ts">
-import ProfileHeader from '~/components/profile/ProfileHeader.vue'
-import ProfileCharCard from '~/components/profile/ProfileCharCard.vue'
-import { UserExample } from '~/data/user'
+import { ref, computed, onMounted } from 'vue'
+import type { Character, Game } from '../../types'
+import { useUserStore } from '../../stores/useUserStore'
+import { useCharactersStore } from '../../stores/useCharactersStore'
+import { useGamesStore } from '../../stores/useGamesStore'
 
 definePageMeta({
   layout: 'main'
 })
 
+const userStore = useUserStore()
+const charactersStore = useCharactersStore()
+const gamesStore = useGamesStore()
+
 const activeTab = ref<'about' | 'characters' | 'games'>('about')
 const editMode = ref(false)
-const aboutText = ref(UserExample.userDesc)
+const aboutText = ref('')
 const profileVisibility = ref('open')
+
+const currentUser = computed(() => userStore.currentUser)
+
+const myCharacters = computed(() =>
+  currentUser.value
+    ? charactersStore.characters.filter((c: Character) => c.owners_name === currentUser.value!.username)
+    : []
+)
+
+const myGames = computed(() =>
+  currentUser.value
+    ? gamesStore.games.filter((g: Game) => g.players_name.includes(currentUser.value!.username))
+    : []
+)
 
 type TabId = 'about' | 'characters' | 'games'
 
-const tabs: { id: TabId; label: string }[] = [
-  { id: 'about', label: 'О себе' },
-  { id: 'characters', label: `Персонажи (${UserExample.userCharList.length})` },
-  { id: 'games', label: `Игры (${UserExample.userFavGames.length})` },
-]
+const tabs = computed(() => [
+  { id: 'about' as TabId, label: 'О себе' },
+  { id: 'characters' as TabId, label: `Персонажи (${myCharacters.value.length})` },
+  { id: 'games' as TabId, label: `Игры (${myGames.value.length})` },
+])
+
+onMounted(async () => {
+  await Promise.all([
+    userStore.fetchById(1),
+    charactersStore.fetchAll(),
+    gamesStore.fetchAll(),
+  ])
+})
 
 function saveAbout() {
   editMode.value = false
-  // здесь будет вызов API
 }
 </script>
 
@@ -248,25 +257,6 @@ function saveAbout() {
   border-color: #0051a8;
 }
 
-.genre-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.genre-tag {
-  background: #e8f0fb;
-  color: #0051a8;
-  font-size: 1.4rem;
-  padding: 0.5rem 1.4rem;
-  border-radius: 2rem;
-}
-
-.genre-tag--sm {
-  font-size: 1.2rem;
-  padding: 0.3rem 1rem;
-}
-
 .setting-row {
   display: flex;
   align-items: center;
@@ -340,13 +330,6 @@ function saveAbout() {
 .game-desc {
   font-size: 1.3rem;
   color: #94a3b8;
-}
-
-.game-genres {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-top: 0.3rem;
 }
 
 .status-badge {

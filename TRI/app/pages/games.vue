@@ -23,6 +23,7 @@
         </div>
       </div>
 
+<<<<<<< feat16
       <div class="sidebar-block npcs-block">
         <h3>НПС / ключевые персонажи</h3>
         <div class="npcs">
@@ -65,6 +66,21 @@
             </div>
 
             <div class="msg-text" v-html="msg.text"></div>
+=======
+    <div class="games">
+        <gameComp v-for="game in gamesStore.games" :key="game.id" :game="game"></gameComp>
+    </div>
+</div>
+
+</template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useGamesStore } from '../stores/useGamesStore'
+import GameSearchComp from '~/components/gameComp/gameSearchComp.vue';
+import GameComp from '~/components/gameComp/gameComp.vue';
+
+>>>>>>> main
 
             <div v-if="msg.actions?.length" class="msg-actions">
               <button
@@ -94,6 +110,7 @@
   </div>
 </template>
 
+<<<<<<< feat16
 <script setup>
 import { ref } from 'vue'
 
@@ -144,6 +161,11 @@ function sendMessage() {
   })
   messageText.value = ''
 }
+=======
+const gamesStore = useGamesStore()
+
+onMounted(() => gamesStore.fetchAll())
+>>>>>>> main
 </script>
 
 <style scoped>
@@ -204,6 +226,7 @@ function sendMessage() {
   line-height: 1.15;
   font-weight: 700;
 }
+<<<<<<< feat16
 
 .game-author {
   margin: 0.3rem 0 0;
@@ -436,3 +459,6 @@ function sendMessage() {
   padding: 1.3rem 3.2rem;
 }
 </style>
+=======
+</style>
+>>>>>>> main

@@ -1,25 +1,22 @@
 <template>
   <NuxtLink :to="`/characters/${char.id}`" class="char-card">
     <div class="char-img-wrap">
-      <img :src="char.icon" :alt="char.name" class="char-img" />
+      <img src="/placeholder-avatar.png" :alt="char.name" class="char-img" />
       <div class="char-overlay">
         <span class="char-view">Смотреть</span>
       </div>
     </div>
     <div class="char-info">
       <p class="char-name">{{ char.name }}</p>
-      <div class="char-stats" v-if="char.stats && (char.stats as any).position">
-        <span class="stat-badge">{{ (char.stats as any).position }}</span>
-        <span class="stat-badge" v-if="(char.stats as any).country">
-          {{ (char.stats as any).country }}
-        </span>
+      <div class="char-stats" v-if="char.status">
+        <span class="stat-badge">{{ char.status }}</span>
       </div>
     </div>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
-import type { Character } from '~/data/characters'
+import type { Character } from '../../types'
 
 defineProps<{
   char: Character
